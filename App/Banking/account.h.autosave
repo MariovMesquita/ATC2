@@ -22,7 +22,7 @@ protected:
     string iban;
     unsigned int account_nr;
     bool status;
-    //list<Transaction> transactions;
+    list<Transaction> transactions;
     float balance;
 public:
     //STRING IBAN é PUBLICO

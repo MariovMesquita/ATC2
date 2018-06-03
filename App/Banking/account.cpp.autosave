@@ -17,7 +17,7 @@ Account::Account(const string& type)
 
 Account::Account(const Account &account)
     :balance(account.balance),
-    iban(account.ib4an),
+    iban(account.iban),
     account_nr(account.account_nr),
     status(account.status)
 {}

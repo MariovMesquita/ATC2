@@ -156,6 +156,7 @@ int main()
                 case 1://deposit
                     break;
                 case 2://withdraw
+                    mybank->
                     break;
                 case 3://transfer
                     break;

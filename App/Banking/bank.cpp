@@ -32,12 +32,12 @@ string Bank::client_nr()
     string nr;
     int aux;
 
-    nr=to_string(g_clControl);
+    nr=to_string(clControl);
     aux=(nr.length()/sizeof(nr[0]));
     aux=7-aux;
     nr.insert(0,aux,'0');
 
-    g_clControl++;
+    clControl++;
 
     return nr;
 }
@@ -120,7 +120,6 @@ Client* Bank::find_client()
 
 Client* Bank::find_client_code(const string& code)
 {
-
     list<Client>::iterator it;
     for(it=clients.begin(); it!=clients.end(); it++)
     {
@@ -128,6 +127,7 @@ Client* Bank::find_client_code(const string& code)
             return &*it;
     }
     cout<<"NOT FOUND"<<endl;
+    return NULL;
 }
 
 void Bank::new_account()
@@ -162,7 +162,7 @@ void Bank::new_account()
         Account* aux=new Normal ("NORMAL");
         owner->add_account(aux);
         accounts.push_back(aux);
-        cout<<aux;
+        cout<<*aux;
         pause();
     }
     break;
@@ -170,13 +170,9 @@ void Bank::new_account()
     case '2':
     {
         Account* aux=new Student ("STUDENT");
-        //cout<<"\n\n*** STUDENT ***"<<endl;
-        //Student acc("STUDENT");
-        //aux=&acc;
         owner->add_account(aux);
         accounts.push_back(aux);
-        cout<<aux;
-        //delete aux;
+        cout<<*aux;
         pause();
     }
         break;
@@ -186,7 +182,7 @@ void Bank::new_account()
         Account* aux=new Retired ("RETIRED");
         owner->add_account(aux);
         accounts.push_back(aux);
-        cout<<aux;
+        cout<<*aux;
         pause();
     }
         break;
@@ -203,18 +199,19 @@ void Bank::process_fees()
     list<Account*> ::iterator it;
     for(it=accounts.begin(); it!=accounts.end();it++)
     {
-        cout<<*it;
+        (*(*it)).process_fee();
     }
 }
 
 void Bank::list_accounts()
 {
     //Account* acc;
-    list<Account*> ::iterator it;
+    list<Account*>::iterator it;
     for(it=accounts.begin(); it!=accounts.end();it++)
     {
-        cout<<it;
+        cout<<*(*it);
     }
+    pause();
 }
 
 Bank::~Bank()

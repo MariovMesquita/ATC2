@@ -8,10 +8,12 @@ SOURCES += \
     client.cpp \
     account.cpp \
     bank.cpp \
-    interface.cpp
+    interface.cpp \
+    transaction.cpp
 
 HEADERS += \
     client.h \
     account.h \
     bank.h \
-    interface.h
+    interface.h \
+    transaction.h
