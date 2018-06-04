@@ -21,6 +21,32 @@ Client::Client(const Client &client)
     zip_code(client.zip_code)
 {}
 
+Account* Client::fetch_account(unsigned int account_number)
+{
+    list<Account*>::iterator it;
+
+    for(it=accounts.begin(); it!=accounts.end(); it++)
+    {
+        if((*(*it)).get_account_nr()==account_number)
+            return (*it);
+    }
+
+    return NULL;
+}
+
+Account* Client::fetch_account(string iban)
+{
+    list<Account*>::iterator it;
+
+    for(it=accounts.begin(); it!=accounts.end(); it++)
+    {
+        if(((*(*it)).iban)==iban)
+            return (*it);
+    }
+
+    return NULL;
+}
+
 bool Client::find_code(string code)
 {
     if(code==client_code)
@@ -70,6 +96,32 @@ void Client::change_add(string address)
 void Client::add_account(Account *account)
 {
     accounts.push_back(account);
+}
+
+void Client::print_accounts()
+{
+    list<Account*>::iterator it;
+    int cntrl=1;
+
+    for(it=accounts.begin(); it!=accounts.end(); it++)
+    {
+        cout<<"* ACCOUNT "<<cntrl<<" *"<<endl;
+        cout<<*(*it);
+        cntrl++;
+    }
+}
+
+void Client::print_accounts_number()
+{
+    list<Account*>::iterator it;
+    int cntrl=1;
+
+    for(it=accounts.begin(); it!=accounts.end(); it++)
+    {
+        cout<<"* ACCOUNT "<<cntrl<<" *"<<endl;
+        cout<<(*(*it)).get_account_nr()<<endl;
+        cntrl++;
+    }
 }
 
 ostream& operator << (ostream& os, const Client &client)

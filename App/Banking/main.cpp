@@ -68,6 +68,12 @@ int main()
                 case 3://block acc
                     break;
                 case 4://find acc
+                {
+                    Account* account=(mybank->find_account());
+                    if(account!=NULL)
+                        cout<<*account;
+                    pause();
+                }
                     break;
                 case 5://list acc
                     mybank->list_accounts();
@@ -118,7 +124,6 @@ int main()
                 case 4://find cl
                 {
                     Client* client=mybank->find_client();
-                    pause();
                     if(client!=NULL)
                         cout<<*client;
                     pause();
@@ -154,13 +159,17 @@ int main()
                 switch(option)
                 {
                 case 1://deposit
+                    mybank->debit();
                     break;
                 case 2://withdraw
-                    mybank->
+                    mybank->credit();
                     break;
                 case 3://transfer
+                    mybank->transfer();
                     break;
                 case 4://list
+                    mybank->list_transactions();
+                    pause();
                     break;
                 case 5://exit
                     pause();

@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include <list>
-//#include "client.h"
+#include "transaction.h"
 
 using namespace std;
 
@@ -19,17 +19,17 @@ class Account
 protected:
     string type;
     fees fee;
-    string iban;
     unsigned int account_nr;
     bool status;
-    //list<Transaction> transactions;
+    list<Transaction*> transactions;
     float balance;
 public:
+    string iban;
     //STRING IBAN é PUBLICO
     //bool status deve ser publico tambem
     //construtor contas em ficheiros t/ de ser de forma diferente
     //struct cliente c/ dados (nome, idade, etc....)
-    //apontadores c/ identificadores p/ cada conta, e ñ endereços de memoria
+    //apontadores c/ identificadores p  / cada conta, e ñ endereços de memoria
     Account(float balance=200, string iban ="to be set", unsigned int account_nr=0, bool status=1);
     Account(const string& type);
     Account(const Account& account);
@@ -41,6 +41,10 @@ public:
     virtual void process_fee(void)=0;
     float deposit(float amount);
     float withdraw(float amount);
+    unsigned int get_account_nr();
+    float get_balance();
+    void add_transaction(Transaction* transaction);
+    void print_transactions();
     ~Account();
 };
 

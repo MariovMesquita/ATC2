@@ -17,7 +17,7 @@ Account::Account(const string& type)
 
 Account::Account(const Account &account)
     :balance(account.balance),
-    iban(account.ib4an),
+    iban(account.iban),
     account_nr(account.account_nr),
     status(account.status)
 {}
@@ -68,6 +68,16 @@ ostream& operator << (ostream& os, const Account &account)
     return os;
 }
 
+unsigned int Account::get_account_nr()
+{
+    return (this->account_nr);
+}
+
+float Account::get_balance()
+{
+    return (this->balance);
+}
+
 Account::RandomAccountNumber()
 {
     unsigned int v1,i;
@@ -108,14 +118,15 @@ float Account :: withdraw(float amount){
 //pede obj conta
 //conta efetua deposito
 
-float Account :: deposit(float amount){
-if (amount>=0){
+float Account :: deposit(float amount)
+{
+    if (amount>=0){
         balance+=amount;
     }
-else {
-    cout << "positive values only, please try again" << endl;
-}
-return balance;
+    else {
+        cout << "positive values only, please try again" << endl;
+    }
+    return balance;
 }
 
 
@@ -130,6 +141,20 @@ void Account:: block (){
 
 status = 0;
 
+}
+
+void Account::add_transaction(Transaction* transaction)
+{
+    transactions.push_back(transaction);
+}
+
+void Account::print_transactions()
+{
+    list<Transaction*>::iterator it;
+    for(it=transactions.begin(); it!=transactions.end(); it++)
+    {
+        cout<<*(*it)<<endl;
+    }
 }
 
 Account::~Account()

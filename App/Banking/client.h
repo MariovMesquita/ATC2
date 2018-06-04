@@ -26,6 +26,10 @@ public:
     bool find_code(string code);
     void change_add(string address);
     void add_account(Account* account);
+    void print_accounts();
+    void print_accounts_number();
+    Account* fetch_account(unsigned int account_number);
+    Account* fetch_account(string iban);
     ~Client();
 };
 

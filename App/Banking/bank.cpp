@@ -101,7 +101,7 @@ Client* Bank::find_client()
             cout<<"Code: ";
             cin.ignore();
             getline(cin,code);
-            client=find_client_code(code);
+            client=find_client(code);
             if(client!=NULL)
                 return client;
             pause();
@@ -118,7 +118,7 @@ Client* Bank::find_client()
     }
 }
 
-Client* Bank::find_client_code(const string& code)
+Client* Bank::find_client(const string& code)
 {
     list<Client>::iterator it;
     for(it=clients.begin(); it!=clients.end(); it++)
@@ -140,7 +140,7 @@ void Bank::new_account()
         cout<<"Owner code: ";
         cin.ignore();
         getline(cin,owner_code);
-        owner=find_client_code(owner_code);
+        owner=find_client(owner_code);
         if(owner==NULL)                     //não funciona
         {
             list_clients();
@@ -196,10 +196,17 @@ void Bank::new_account()
 
 void Bank::process_fees()
 {
-    list<Account*> ::iterator it;
+    float initial,final;
+    list<Account*>::iterator it;
+    Transaction* transaction;
+
     for(it=accounts.begin(); it!=accounts.end();it++)
     {
+        initial=(*(*it)).get_balance();
         (*(*it)).process_fee();
+        final=(*(*it)).get_balance();
+        transaction=new Fees((final-initial),"hoje",initial,final);
+        (*(*it)).add_transaction(transaction);
     }
 }
 
@@ -212,6 +219,171 @@ void Bank::list_accounts()
         cout<<*(*it);
     }
     pause();
+}
+
+Account* Bank::find_account()
+{
+    int option=0;
+
+    while(option!=3)
+    {
+        //clr_scrn();
+        cout<<"Search by:\n\n"<<"1- IBAN"<<endl<<"2- CLIENT CODE"<<endl<<"3- BACK\n: ";
+        cin.ignore();
+        cin>>option;
+
+        switch(option)
+        {
+        case 1:
+        {
+            Account* acc;
+            string iban;
+            cout<<"IBAN: ";
+            cin.ignore();
+            getline(cin,iban);
+            acc=find_account(iban);
+            if(acc!=NULL)
+                return acc;
+
+            return NULL;
+        }
+            break;
+
+        case 2:
+        {
+            unsigned int account_number;
+            Client* client;
+            string code;
+            cout<<"Client Code: ";
+            cin.ignore();
+            getline(cin,code);
+            client=find_client(code);
+            if(client!=NULL)
+            {
+                client->print_accounts_number();
+                cout<<"\nAccount number: ";
+                cin>>account_number;
+                return (client->fetch_account(account_number));
+            }
+            return NULL;
+            pause();
+        }
+            break;
+
+        case 3:
+            pause();
+            break;
+
+        default:
+            break;
+        }
+    }
+}
+
+Account* Bank::find_account(const string& iban)
+{
+    list<Client>::iterator it;
+    Account* acc;
+
+    for(it=clients.begin(); it!=clients.end(); it++)
+    {
+        acc=it->fetch_account(iban);
+
+        if(acc!=NULL)
+            return acc;
+    }
+
+    return NULL;
+}
+
+Account* Bank::find_account(Client* client)
+{
+
+}
+
+void Bank::debit()
+{
+    Account* acc;
+    Transaction* transaction;
+    float amount, initial,final;
+
+    cout<<"*** DEPOSIT ***"<<endl;
+
+    acc=find_account();
+    if(acc!=NULL)
+    {
+        initial=acc->get_balance();
+        cout<<"Amount: ";
+        cin>>amount;
+        final=acc->deposit(amount);
+        transaction=new Debit(amount,"hoje",initial,final);
+        acc->add_transaction(transaction);
+    }
+}
+
+void Bank::credit()
+{
+    Account* acc;
+    Transaction* transaction;
+    float amount, initial,final;
+
+    cout<<"*** WITHDRAW ***"<<endl;
+
+    acc=find_account();
+    if(acc!=NULL)
+    {
+        initial=acc->get_balance();
+        cout<<"Amount: ";
+        cin>>amount;
+        final=acc->withdraw(amount);
+        transaction=new Credit(amount,"hoje",initial,final);
+        acc->add_transaction(transaction);
+    }
+}
+
+void Bank::transfer()
+{
+    Account* acc1;
+    Account* acc2;
+    Transaction* transaction1;
+    Transaction* transaction2;
+    float amount, initial1, initial2, final1, final2;
+
+    cout<<"*** TRANSFER ***"<<endl;
+    cout<<"*** FROM ***"<<endl;
+    acc1=find_account();
+    cout<<"*** TO ***"<<endl;
+    acc2=find_account();
+
+    if(acc1!=NULL && acc2!=NULL)
+    {
+        initial1=acc1->get_balance();
+        initial2=acc2->get_balance();
+        cout<<"Amount: ";
+        cin>>amount;
+        final1=acc1->withdraw(amount);
+        final2=acc2->withdraw(amount);
+        transaction1=new Transfer(amount,"hoje",0,initial1,final1);
+        transaction2=new Transfer(amount,"hoje",1,initial2,final2);
+        acc1->add_transaction(transaction1);
+        acc2->add_transaction(transaction1);
+    }
+}
+
+void Bank::list_transactions()
+{
+    Account* acc;
+
+    cout<<"*** TRANSACTIONS ***"<<endl;
+
+    acc=find_account();
+    if(acc!=NULL)
+    {
+        clr_scrn();
+        cout<<*acc<<endl;
+        cout<<"**************************************"<<endl;
+        acc->print_transactions();
+    }
 }
 
 Bank::~Bank()
