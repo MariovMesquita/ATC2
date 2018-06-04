@@ -7,7 +7,7 @@
 
 using namespace std;
 
-struct fees
+struct fees // PASSAR PARA O BANCO
 {
     float student=0;
     float retired=3;

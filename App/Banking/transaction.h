@@ -5,19 +5,25 @@
 
 using namespace std;
 
+enum tr_type
+{
+    DEBIT, CREDIT, FEES, TRANSFER
+};
+
 class Transaction
 {
 protected:
-    float amount, initial_balance, final_balance;
+    float amount;
     string date;
-    string type;
+    tr_type type;
     bool from_to;
+    float initial_balance, final_balance;
     //string description;
 public:
-    Transaction(float amount=0, string date="To be set", string type="To be set", bool from_to=0, float initial_balance=0, float final_balance=0);
+    Transaction(float amount=0, string date="To be set", tr_type type=DEBIT, float initial_balance=0, float final_balance=0);
     friend ostream& operator << (ostream& os, const Transaction& transaction);
-
 };
+
 
 class Debit:public Transaction
 {
@@ -35,8 +41,6 @@ public:
 
 class Transfer:public Transaction
 {
-//protected:
-//    bool from_to;
 public:
     Transfer(float amount=0, string date="To be set", bool from_to=0, float initial_balance=0, float final_balance=0);
     //friend ostream& operator << (ostream& os, const Transfer& transaction);

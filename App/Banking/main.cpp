@@ -80,6 +80,7 @@ int main()
                     break;
                 case 6://process fee
                     mybank->process_fees();
+
                     pause();
                     break;
                 case 7://exit

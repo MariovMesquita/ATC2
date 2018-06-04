@@ -1,15 +1,16 @@
 #include "bank.h"
 
 Bank::Bank(string name, unsigned int code)
-    :name(name),
-     code(code)
+    :code(code),
+    name(name)
+
 {}
 
 Bank::Bank(const Bank &bank)
     :clients(bank.clients),
      accounts(bank.accounts),
-     name(bank.name),
-     code(bank.code)
+     code(bank.code),
+     name(bank.name)
 {}
 
 Bank Bank::operator =(const Bank& bank)
@@ -195,8 +196,8 @@ void Bank::new_account()
 }
 
 void Bank::process_fees()
-{
-    float initial,final;
+{    
+    float initial,final,amount;
     list<Account*>::iterator it;
     Transaction* transaction;
 
@@ -205,7 +206,8 @@ void Bank::process_fees()
         initial=(*(*it)).get_balance();
         (*(*it)).process_fee();
         final=(*(*it)).get_balance();
-        transaction=new Fees((final-initial),"hoje",initial,final);
+        amount=initial-final;
+        transaction=new Fees(amount,"hoje",initial,final);
         (*(*it)).add_transaction(transaction);
     }
 }
