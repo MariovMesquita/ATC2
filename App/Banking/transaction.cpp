@@ -108,6 +108,7 @@ ostream& operator << (ostream& os, const Transaction& transaction)
     os<<"  *** Date: "<<transaction.date;
 
     return os;
+
 }
 
 

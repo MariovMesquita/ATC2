@@ -364,11 +364,11 @@ void Bank::transfer()
         cout<<"Amount: ";
         cin>>amount;
         final1=acc1->withdraw(amount);
-        final2=acc2->withdraw(amount);
+        final2=acc2->deposit(amount);
         transaction1=new Transfer(amount,"hoje",0,initial1,final1);
         transaction2=new Transfer(amount,"hoje",1,initial2,final2);
         acc1->add_transaction(transaction1);
-        acc2->add_transaction(transaction1);
+        acc2->add_transaction(transaction2);
     }
 }
 
